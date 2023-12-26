@@ -3,16 +3,16 @@
 echo "Killing any running ollama processes..."
 pgrep ollama | xargs kill
 
-echo "Checking if /root/.ollama/ exists and it's not a symlink..."
+echo "Checking if /root/.ollama exists and it's not a symlink..."
 
-if [ -d "/root/.ollama/" ] && [ ! -L "/root/.ollama/" ]; then
-    echo "/root/.ollama/ exists and it's not a symlink. Removing it and creating a symlink..."
-    rm -rf /root/.ollama/
-    ln -s /runpod-volume/ /root/.ollama/
+if [ -d "/root/.ollama" ] && [ ! -L "/root/.ollama" ]; then
+    echo "/root/.ollama exists and it's not a symlink. Removing it and creating a symlink..."
+    rm -rf /root/.ollama
+    ln -s /runpod-volume/ /root/.ollama
     echo "Symlink created."
 elif [ ! -e "/root/.ollama/" ]; then
-    echo "/root/.ollama/ does not exist. Creating a symlink..."
-    ln -s /runpod-volume/ /root/.ollama/
+    echo "/root/.ollama does not exist. Creating a symlink..."
+    ln -s /runpod-volume/ /root/.ollama
     echo "Symlink created."
 fi
 
