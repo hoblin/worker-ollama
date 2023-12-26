@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Killing any running ollama processes..."
+pgrep ollama | xargs kill
+
 echo "Checking if /root/.ollama/ exists and it's not a symlink..."
 
 if [ -d "/root/.ollama/" ] && [ ! -L "/root/.ollama/" ]; then
@@ -15,9 +18,6 @@ fi
 
 echo "Listing directories in /:"
 ls /
-
-echo "Killing any running ollama processes..."
-pgrep ollama | xargs kill
 
 echo "Starting ollama server..."
 ollama serve 2>&1 | tee ollama.server.log &
