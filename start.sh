@@ -16,9 +16,6 @@ elif [ ! -e "/root/.ollama/" ]; then
     echo "Symlink created."
 fi
 
-echo "Listing directories in /:"
-ls /
-
 echo "Starting ollama server..."
 ollama serve 2>&1 | tee ollama.server.log &
 # Store the process ID (PID) of the background command
