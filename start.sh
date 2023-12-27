@@ -12,7 +12,7 @@ if [ ! -e "/root/.ollama" ]; then
 fi
 
 echo "Starting ollama server..."
-ollama serve $1 2>&1 | tee ollama.server.log &
+ollama serve 2>&1 | tee ollama.server.log &
 # Store the process ID (PID) of the background command
 
 check_server_is_running() {
