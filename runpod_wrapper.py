@@ -47,7 +47,14 @@ def handler(job: HandlerJob):
     model_name, _, model_tag = input["input"]["model"].partition(':')
 
     # Check if the model is in the list of models
-    if model_name not in (name.split(':')[0] for name in models):
+    if model_tag:
+        model_in_list = input["input"]["model"] in models
+    else:
+        model_in_list = any(model.split(
+            ':')[0] == model_name for model in models)
+
+    if not model_in_list:
+        logging.info(f"Model not in list: {input['input']['model']}")
         # If the model is not in the list, download it
         pull_model(input["input"]["model"])
         # Add the model to the list
