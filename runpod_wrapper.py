@@ -69,6 +69,7 @@ def handler(job: HandlerJob):
         url=f"{base_url}/api/{input['method_name']}/",
         headers={"Content-Type": "application/json"},
         json=input["input"],
+        timeout=300,  # Timeout after 5 minutes
     )
     response.encoding = "utf-8"
 
