@@ -8,6 +8,7 @@ WORKDIR /
 
 RUN apt-get update --yes --quiet && DEBIAN_FRONTEND=noninteractive apt-get install --yes --quiet --no-install-recommends \
     software-properties-common \
+    curl \
     gpg-agent \
     build-essential apt-utils \
     && rm -rf /var/lib/apt/lists/*
