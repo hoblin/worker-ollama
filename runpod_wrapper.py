@@ -2,7 +2,7 @@
 import runpod
 from typing import Any, Literal, TypedDict
 import requests
-import sys
+
 
 class HandlerInput(TypedDict):
     method_name: Literal["generate"]
@@ -14,14 +14,11 @@ class HandlerJob(TypedDict):
 
 
 def handler(job: HandlerJob):
-    base_url = "http://0.0.0.0:11434"
+    base_url = "http://localhost:11434"
     input = job["input"]
 
     # Streaming is not supported in serverless mode
     input["input"]["stream"] = False
-    # Get the model name from arguements
-    model = sys.argv[1]
-    input["input"]["model"] = model
 
     response = requests.post(
         url=f"{base_url}/api/{input['method_name']}/",

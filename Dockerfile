@@ -36,7 +36,5 @@ ADD . .
 
 RUN pip install runpod
 
-# Override Ollama's entrypoint
-ENTRYPOINT ["bin/bash", "start.sh"]
-
-CMD ["dolphin-mixtral"]
+# Run start.sh using CMD
+CMD ["bin/bash", "start.sh"]
