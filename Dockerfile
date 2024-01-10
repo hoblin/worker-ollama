@@ -36,4 +36,4 @@ ADD . .
 
 RUN pip install runpod
 
-ENTRYPOINT ["/bin/bash", "/wrapper.sh"]
+ENTRYPOINT ["/bin/bash", "entrypoint.sh"]
