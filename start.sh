@@ -1,8 +1,5 @@
 #!/bin/bash
 
-echo "Killing any running ollama processes..."
-pgrep ollama | xargs kill
-
 echo "Checking if /root/.ollama exists and it's not a symlink..."
 
 if [ ! -e "/root/.ollama" ]; then
@@ -11,13 +8,9 @@ if [ ! -e "/root/.ollama" ]; then
     echo "Symlink created."
 fi
 
-echo "Starting ollama server..."
-ollama serve 2>&1 | tee ollama.server.log &
-# Store the process ID (PID) of the background command
-
 check_server_is_running() {
-    # Replace "Listening" with the actual expected output
-    if tail -n 1 ollama.server.log | grep -q "Listening"; then
+    # Send a GET request to the /api/tags endpoint and check the HTTP status code
+    if curl -s -o /dev/null -w "%{http_code}" http://localhost:11434/api/tags | grep -q "200"; then
         echo "Server is running."
         return 0 # Success
     else
@@ -26,14 +19,11 @@ check_server_is_running() {
     fi
 }
 
-# Wait for the process to print "Listening"
+# Wait for the server to start
 echo "Waiting for server to start..."
 while ! check_server_is_running; do
     sleep 1
 done
-
-# echo "Pulling data with ollama..."
-# ollama pull $1
 
 echo "Running runpod_wrapper.py..."
 python -u runpod_wrapper.py $1
