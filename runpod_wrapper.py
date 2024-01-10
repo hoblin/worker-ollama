@@ -13,9 +13,34 @@ class HandlerJob(TypedDict):
     input: HandlerInput
 
 
+# Load the list of models at startup
+base_url = "http://localhost:11434"
+response = requests.get(f"{base_url}/api/tags")
+# Extract the model names
+models = [model["name"] for model in response.json()["models"]]
+
+
+def pull_model(model_name: str):
+    """Download a new model."""
+    response = requests.post(
+        url=f"{base_url}/api/pull",
+        headers={"Content-Type": "application/json"},
+        json={"name": model_name},
+    )
+    response.encoding = "utf-8"
+    return response.json()
+
+
 def handler(job: HandlerJob):
-    base_url = "http://localhost:11434"
     input = job["input"]
+
+    # Check if the model is in the list of models
+    model_name = input["input"]["model"]
+    if model_name not in models:
+        # If the model is not in the list, download it
+        pull_model(model_name)
+        # Add the model to the list
+        models.append(model_name)
 
     # Streaming is not supported in serverless mode
     input["input"]["stream"] = False
