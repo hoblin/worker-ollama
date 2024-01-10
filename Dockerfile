@@ -36,5 +36,4 @@ ADD . .
 
 RUN pip install runpod
 
-# Run start.sh using CMD
-CMD ["bin/bash", "start.sh"]
+ENTRYPOINT ["/bin/bash", "/wrapper.sh"]
