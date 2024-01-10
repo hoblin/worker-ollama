@@ -31,7 +31,10 @@ def pull_model(model_name: str):
     response = requests.post(
         url=f"{base_url}/api/pull",
         headers={"Content-Type": "application/json"},
-        json={"name": model_name},
+        json={
+            "name": model_name,
+            "stream": False
+        },
     )
     response.encoding = "utf-8"
     return response.json()
