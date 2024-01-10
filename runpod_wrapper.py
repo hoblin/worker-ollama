@@ -2,6 +2,10 @@
 import runpod
 from typing import Any, Literal, TypedDict
 import requests
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
 
 
 class HandlerInput(TypedDict):
@@ -18,10 +22,12 @@ base_url = "http://localhost:11434"
 response = requests.get(f"{base_url}/api/tags")
 # Extract the model names
 models = [model["name"] for model in response.json()["models"]]
+logging.info(f"Loaded models: {models}")
 
 
 def pull_model(model_name: str):
     """Download a new model."""
+    logging.info(f"Pulling model: {model_name}")
     response = requests.post(
         url=f"{base_url}/api/pull",
         headers={"Content-Type": "application/json"},
@@ -41,6 +47,8 @@ def handler(job: HandlerJob):
         pull_model(model_name)
         # Add the model to the list
         models.append(model_name)
+
+    logging.info(f"Generating using model: {model_name}")
 
     # Streaming is not supported in serverless mode
     input["input"]["stream"] = False
