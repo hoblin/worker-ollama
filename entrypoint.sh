@@ -1,3 +1,3 @@
 #!/bin/bash
 ./start.sh &
-exec "/bin/ollama" "$@"
+exec "/bin/ollama serve"
