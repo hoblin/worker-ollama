@@ -43,15 +43,17 @@ def pull_model(model_name: str):
 def handler(job: HandlerJob):
     input = job["input"]
 
-    # Check if the model is in the list of models
-    model_name = input["input"]["model"]
-    if model_name not in models:
-        # If the model is not in the list, download it
-        pull_model(model_name)
-        # Add the model to the list
-        models.append(model_name)
+    # Split the model name and tag
+    model_name, _, model_tag = input["input"]["model"].partition(':')
 
-    logging.info(f"Generating using model: {model_name}")
+    # Check if the model is in the list of models
+    if model_name not in (name.split(':')[0] for name in models):
+        # If the model is not in the list, download it
+        pull_model(input["input"]["model"])
+        # Add the model to the list
+        models.append(input["input"]["model"])
+
+    logging.info(f"Generating using model: {input['input']['model']}")
 
     # Streaming is not supported in serverless mode
     input["input"]["stream"] = False
