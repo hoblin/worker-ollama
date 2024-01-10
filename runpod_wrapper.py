@@ -35,6 +35,7 @@ def pull_model(model_name: str):
             "name": model_name,
             "stream": False
         },
+        timeout=3600,  # Timeout after 1 hour
     )
     response.encoding = "utf-8"
     return response.json()
